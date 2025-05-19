@@ -1,0 +1,1116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xfinity Savings Calculator</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --xfinity-purple: #563590;
+            --xfinity-blue: #0075cc;
+            --highlight-green: #4CAF50;
+            --error-red: #ff4444;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--xfinity-purple) 0%, #2a1a4a 100%) fixed;
+            color: white;
+            margin: 0;
+            padding: 10px;
+            font-family: 'Montserrat', Arial, sans-serif;
+            min-height: 100vh;
+            font-size: 14px;
+        }
+
+        .logo-container {
+            width: 100%;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .logo-container img {
+            height: 150px;
+            max-width: 100%;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            position: relative;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            height: 45px;
+        }
+
+        h1, h2, h3 {
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-top: 0;
+        }
+
+        h1 {
+            font-size: 18px;
+            margin-bottom: 2px;
+        }
+
+        h2 {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        h3 {
+            font-size: 15px;
+            margin-bottom: 8px;
+        }
+
+        .header-title {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .container {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .input-section, .summary-section {
+            flex: 1;
+            min-width: 300px;
+            padding: 12px;
+            background: rgba(255,255,255,0.12);
+            backdrop-filter: blur(8px);
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        .header-buttons {
+            display: flex;
+            gap: 8px;
+            margin-left: auto;
+        }
+
+        .header-button {
+            background-color: var(--xfinity-blue);
+            color: white;
+            border: none;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 5px;
+            font-weight: 600;
+            font-family: inherit;
+            transition: all 0.2s;
+            font-size: 13px;
+        }
+
+        .header-button:hover {
+            background-color: #0062a8;
+            transform: translateY(-1px);
+        }
+
+        .header-button:active {
+            transform: translateY(0);
+        }
+
+        select {
+            background-color: white !important;
+            color: #333 !important;
+            border: 1px solid #ccc !important;
+            padding: 6px 8px !important;
+            margin: 2px 0 8px !important;
+            border-radius: 5px !important;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23563590'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 6px center;
+            background-size: 14px;
+            width: 100%;
+            box-sizing: border-box;
+            font-family: inherit;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        select option {
+            background: white !important;
+            color: #333 !important;
+            padding: 6px !important;
+            font-size: 13px;
+        }
+
+        select:focus {
+            outline: 2px solid var(--xfinity-blue) !important;
+            border-color: var(--xfinity-blue) !important;
+        }
+
+        select:hover {
+            border-color: var(--xfinity-blue) !important;
+        }
+
+        select option:hover {
+            background-color: var(--xfinity-blue) !important;
+            color: white !important;
+        }
+
+        .line-details {
+            margin-top: 10px;
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 10px;
+            border-radius: 6px;
+            position: relative;
+            background: rgba(0,0,0,0.1);
+        }
+
+        input {
+            margin: 2px 0 8px;
+            padding: 6px 8px;
+            border-radius: 5px;
+            border: 1px solid rgba(255,255,255,0.3);
+            width: 100%;
+            box-sizing: border-box;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            font-family: inherit;
+            font-size: 13px;
+        }
+
+        input:focus {
+            outline: 2px solid var(--xfinity-blue);
+        }
+
+        button {
+            background-color: var(--xfinity-blue);
+            color: white;
+            border: none;
+            cursor: pointer;
+            padding: 8px 12px;
+            margin-right: 6px;
+            border-radius: 5px;
+            font-weight: 600;
+            font-family: inherit;
+            transition: all 0.2s;
+            margin-top: 6px;
+            font-size: 13px;
+        }
+
+        button:hover {
+            background-color: #0062a8;
+            transform: translateY(-1px);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .disclaimer {
+            margin-top: 10px;
+            font-size: 0.7em;
+            color: rgba(255,255,255,0.7);
+            border-top: 1px dashed rgba(255,255,255,0.3);
+            padding-top: 8px;
+        }
+
+        .summary-item {
+            margin: 8px 0;
+            padding: 10px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 6px;
+        }
+
+        .price-details {
+            margin-top: 8px;
+            padding: 8px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 5px;
+            font-size: 0.8em;
+        }
+
+        .price-details p {
+            margin: 4px 0;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .price-details p span:last-child {
+            font-weight: 600;
+        }
+
+        .savings-highlight {
+            font-size: 0.9em;
+            color: var(--highlight-green);
+            font-weight: bold;
+            margin: 10px 0;
+            padding: 10px;
+            background: rgba(76, 175, 80, 0.1);
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        .line-item {
+            margin-bottom: 8px;
+            padding-bottom: 8px;
+            border-bottom: 1px dashed rgba(255,255,255,0.2);
+            font-size: 0.85em;
+        }
+
+        .pricing-option {
+            margin: 6px 0;
+            display: flex;
+            align-items: center;
+            font-size: 13px;
+        }
+
+        .pricing-option input {
+            width: auto;
+            margin-right: 6px;
+            margin-bottom: 0;
+        }
+
+        .breakdown-details {
+            display: none;
+            margin-top: 8px;
+            padding: 8px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 5px;
+            font-size: 0.8em;
+        }
+
+        .chart {
+            display: flex;
+            height: 25px;
+            margin: 10px 0;
+            background: rgba(255,255,255,0.2);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .chart div {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.8em;
+        }
+
+        #loader {
+            display: none;
+            text-align: center;
+            margin: 10px 0;
+        }
+
+        .error-message {
+            color: var(--error-red);
+            font-weight: 600;
+            margin-top: 2px;
+            font-size: 0.75em;
+        }
+
+        .input-error {
+            border: 2px solid var(--error-red) !important;
+        }
+
+        .promo-tag {
+            background: var(--highlight-green);
+            color: white;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-size: 0.7em;
+            font-weight: 600;
+            margin-left: 5px;
+        }
+
+        .line-details label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin: 6px 0;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .line-details input[type="checkbox"] {
+            width: 14px;
+            height: 14px;
+            margin: 0;
+            flex-shrink: 0;
+        }
+
+        .device-options-row {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin: 4px 0 8px;
+        }
+
+        .device-options-row > div {
+            flex: 1;
+        }
+
+        .device-options-row label {
+            white-space: nowrap;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            font-size: 0.85em;
+        }
+
+        th, td {
+            padding: 6px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+        }
+
+        th {
+            font-weight: 600;
+        }
+
+        @media print {
+            body {
+                background: white !important;
+                color: black !important;
+                font-size: 8pt !important;
+                padding: 3mm !important;
+                margin: 0 !important;
+            }
+
+            header {
+                display: flex !important;
+                margin-bottom: 3mm !important;
+                align-items: center;
+            }
+
+            .logo {
+                height: 25px !important;
+                filter: grayscale(100%) brightness(0%);
+            }
+
+            .logo-container img {
+                height: 80px !important;
+            }
+
+            h1 {
+                color: black !important;
+                font-size: 12pt !important;
+                margin-bottom: 1mm !important;
+            }
+
+            h2 {
+                font-size: 10pt !important;
+                margin-bottom: 2mm !important;
+            }
+
+            h3 {
+                font-size: 9pt !important;
+                margin-bottom: 1mm !important;
+            }
+
+            .input-section, button, input, select, .remove-line, 
+            .pricing-option, .disclaimer, .price-details p:last-child, #loader {
+                display: none !important;
+            }
+
+            .container {
+                display: block !important;
+                gap: 0 !important;
+            }
+
+            .summary-section {
+                width: 100% !important;
+                padding: 0 !important;
+                background: white !important;
+                box-shadow: none !important;
+                backdrop-filter: none !important;
+            }
+
+            #summaryContent {
+                display: grid !important;
+                grid-template-columns: 1fr 1fr !important;
+                gap: 2mm !important;
+                page-break-inside: avoid !important;
+            }
+
+            .summary-item {
+                margin: 1mm !important;
+                padding: 1mm !important;
+                border: 1px solid #ddd !important;
+                background: white !important;
+                page-break-inside: avoid !important;
+            }
+
+            .savings-highlight {
+                font-size: 8pt !important;
+                margin: 1mm 0 !important;
+                padding: 1mm !important;
+                background: #f5f5f5 !important;
+                color: #333 !important;
+                grid-column: 1 / -1 !important;
+                page-break-inside: avoid !important;
+            }
+
+            .line-item {
+                margin: 1mm 0 !important;
+                padding: 1mm !important;
+                border-bottom: 1px solid #ddd !important;
+                font-size: 7pt !important;
+            }
+
+            .breakdown-details {
+                display: block !important;
+                margin: 1mm 0 !important;
+                padding: 1mm !important;
+                font-size: 7pt !important;
+                background: white !important;
+            }
+
+            .chart {
+                display: none !important; /* Simplified for print */
+            }
+
+            table {
+                font-size: 7pt !important;
+                margin: 1mm 0 !important;
+            }
+
+            th, td {
+                padding: 1mm !important;
+            }
+
+            body::after {
+                content: "Official Xfinity Calculator - Generated on " attr(data-date);
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                text-align: center;
+                font-size: 6pt;
+                color: #666;
+            }
+
+            @page {
+                size: A4;
+                margin: 5mm;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 8px;
+            }
+            
+            .container {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .input-section, .summary-section {
+                min-width: 100%;
+                padding: 10px;
+            }
+            
+            header {
+                flex-direction: row;
+                text-align: left;
+                gap: 8px;
+                margin-bottom: 12px;
+            }
+            
+            .header-buttons {
+                margin-top: 8px;
+                width: 100%;
+                justify-content: flex-end;
+            }
+            
+            .logo {
+                height: 40px;
+            }
+            
+            h1 {
+                font-size: 18px;
+            }
+
+            .device-options-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 6px;
+            }
+
+            .device-options-row > div {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-buttons {
+                justify-content: space-between;
+            }
+            
+            .header-button {
+                flex: 1;
+                text-align: center;
+                padding: 8px !important;
+            }
+        }
+    </style>
+</head>
+<body data-date="">
+    <!-- Logo Container at the top center -->
+    <div class="logo-container">
+        <!-- Replace with your logo URL or CDN-hosted image -->
+        <img src="xfinitylogo.png" class="logo" alt="Xfinity Logo">
+    </div>
+
+    <header>
+        <div class="header-title">
+            <h1>Savings Calculator</h1>
+            <p style="margin: 2px 0 0; opacity: 0.8; font-size: 0.85em;">Compare your current costs with Xfinity Mobile</p>
+        </div>
+        <div class="header-buttons">
+            <button class="header-button" onclick="window.print()"><i class="fas fa-print"></i> Print</button>
+            <button class="header-button" onclick="resetForm()"><i class="fas fa-redo"></i> Reset</button>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="input-section">
+            <h2><i class="fas fa-user-circle"></i> Customer Information</h2>
+            
+            <label>Current Cost for Home Services (Video, Internet, Home Phone, Home Security) ($):</label>
+            <input type="number" id="currentHome" step="0.01" min="0" required>
+            <div id="currentHomeError" class="error-message"></div>
+            
+            <label>Current Cost for Mobile Services (Cellular Services) ($):</label>
+            <input type="number" id="currentMobile" step="0.01" min="0" required>
+            <div id="currentMobileError" class="error-message"></div>
+            
+            <label>New Cost for Xfinity Services at Home (Video, Internet, Home Phone, Home Security) ($):</label>
+            <input type="number" id="newHome" step="0.01" min="0" required>
+            <div id="newHomeError" class="error-message"></div>
+            
+            <label>Number of Mobile Lines:</label>
+            <input type="number" id="numLines" min="1" max="10" value="1" required>
+            
+            <label>Promotion:</label>
+            <select id="promotion">
+                <option value="none">No Promo</option>
+                <option value="free">Free Line Service for 12 Months (device costs still apply)</option>
+                <option value="bogo">Buy One, Get One Free Line Service for 12 Months (device costs still apply)</option>
+            </select>
+
+            <div id="linesContainer"></div>
+
+            <div id="loader">
+                <img src="https://i.gifer.com/ZZ5H.gif" width="25px" alt="Calculating...">
+                <p style="font-size: 0.85em;">Calculating your savings...</p>
+            </div>
+
+            <button onclick="calculateSavings()"><i class="fas fa-calculator"></i> Calculate Savings</button>
+
+            <div class="disclaimer">
+                <p><i class="fas fa-info-circle"></i> *Price is subject to change at any time. Prices displayed are not guaranteed and taxes/fees extra. Promotional pricing expires after 12 months. Device costs are not included in free line promotions.</p>
+            </div>
+        </div>
+
+        <div class="summary-section">
+            <h2><i class="fas fa-file-alt"></i> Savings Summary</h2>
+            <div id="summaryContent">
+                <p style="font-size: 0.9em;">Enter your information and click "Calculate" to see your potential savings.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Set generated date for print footer
+        document.body.setAttribute('data-date', new Date().toLocaleDateString());
+
+        // Complete device data
+        const devices = {
+            phone: [
+                {name: "Apple iPhone 16 Pro Max", promo: 15.41, full: 1199.99, monthly: 49.99, type: 'phone'},
+                {name: "Apple iPhone 16 Pro", promo: 7.08, full: 999.99, monthly: 41.66, type: 'phone'},
+                {name: "Apple iPhone 16 Plus", promo: 4.16, full: 929.99, monthly: 38.74, type: 'phone'},
+                {name: "Apple iPhone 16", promo: 0.00, full: 829.99, monthly: 34.58, type: 'phone'},
+                {name: "Apple iPhone 16e", promo: 0.00, full: 599.99, monthly: 24.99, type: 'phone'},
+                {name: "Apple iPhone 15", promo: 0.00, full: 729.99, monthly: 30.41, type: 'phone'},
+                {name: "Samsung Galaxy S25 Ultra", promo: 19.58, full: 1299.99, monthly: 54.16, type: 'phone'},
+                {name: "Samsung Galaxy S25 Edge", promo: 11.25, full: 1099.99, monthly: 45.03, type: 'phone'},
+                {name: "Samsung Galaxy S25+", promo: 7.08, full: 999.99, monthly: 41.66, type: 'phone'},
+                {name: "Samsung Galaxy S25", promo: 0.00, full: 799.99, monthly: 33.33, type: 'phone'},
+                {name: "Samsung Galaxy S24 FE", promo: 0.00, full: 649.99, monthly: 27.08, type: 'phone'},
+                {name: "Samsung Galaxy Z Fold6", promo: 44.58, full: 1899.99, monthly: 79.16, type: 'phone'},
+                {name: "Samsung Galaxy Z Flip6", promo: 11.25, full: 1099.99, monthly: 45.83, type: 'phone'},
+                {name: "Samsung Galaxy A36 5G", promo: 0.00, full: 399.99, monthly: 16.66, type: 'phone'},
+                {name: "Samsung Galaxy A26 5G", promo: 8.33, full: 299.99, monthly: 12.49, type: 'phone'},
+                {name: "Samsung Galaxy A16 5G", promo: 4.17, full: 199.99, monthly: 8.33, type: 'phone'},
+                {name: "Samsung Galaxy A35 5g", promo: 0.00, full: 349.99, monthly: 14.50, type: 'phone'},
+                {name: "Samsung Galaxy A25 5G", promo: 6.25, full: 249.99, monthly: 10.41, type: 'phone'},
+                {name: "Google Pixel 9 Pro XL", promo: 11.25, full: 1099.99, monthly: 45.83, type: 'phone'},
+                {name: "Google Pixel 9 Pro", promo: 7.08, full: 999.99, monthly: 41.66, type: 'phone'},
+                {name: "Google Pixel 9", promo: 0.00, full: 799.99, monthly: 33.33, type: 'phone'},
+                {name: "Google Pixel 9 Pro Fold", promo: 40.41, full: 1799.99, monthly: 74.99, type: 'phone'},
+                {name: "Motorola razr - 2025", promo: 0.00, full: 599.99, monthly: 24.99, type: 'phone'},
+                {name: "Motorola moto g - 2025", promo: 3.33, full: 179.99, monthly: 7.49, type: 'phone'},
+                {name: "Motorola Moto g stylus 5G - 2024", promo: 6.67, full: 259.99, monthly: 10.83, type: 'phone'},
+                {name: "Motorola moto g 5G - 2024", promo: 2.50, full: 159.99, monthly: 6.66, type: 'phone'},
+                {name: "Motorola moto g play - 2024", promo: 0.42, full: 109.99, monthly: 4.58, type: 'phone'},
+                {name: "Motorola moto g stylus 5G - 2023", promo: 4.17, full: 199.99, monthly: 8.33, type: 'phone'},
+                {name: "Motorola razr - 2024", promo: 0.00, full: 599.99, monthly: 24.99, type: 'phone'}
+            ],
+            tablet: [
+                {name: "Apple iPad Pro 13-inch (M4)", promo: 62.49, full: 1499.99, monthly: 62.49, type: 'tablet'},
+                {name: "Apple iPad Pro 11-inch (M4)", promo: 49.99, full: 1199.99, monthly: 49.99, type: 'tablet'},
+                {name: "Apple iPad Air 13-inch (M3)", promo: 39.58, full: 949.99, monthly: 39.58, type: 'tablet'},
+                {name: "Apple iPad Air 11-inch (M3)", promo: 31.24, full: 749.99, monthly: 31.24, type: 'tablet'},
+                {name: "Apple iPad (A16)", promo: 10.42, full: 499.99, monthly: 20.83, type: 'tablet'},
+                {name: "Apple iPad (10th Generation)", promo: 20.83, full: 499.99, monthly: 20.83, type: 'tablet'},
+                {name: "Apple iPad mini 7th Gen (A17 Pro)", promo: 27.08, full: 649.99, monthly: 27.08, type: 'tablet'}
+            ],
+            watch: [
+                {name: "Apple Watch Ultra 2", promo: 33.33, full: 799.99, monthly: 33.33, type: 'watch'},
+                {name: "Apple Watch Series 10 (46mm)", promo: 22.08, full: 529.99, monthly: 22.08, type: 'watch'},
+                {name: "Apple Watch Series 10 (42mm)", promo: 20.83, full: 499.99, monthly: 20.83, type: 'watch'},
+                {name: "Apple Watch Series 9 (45mm)", promo: 22.08, full: 529.99, monthly: 22.08, type: 'watch'},
+                {name: "Apple Watch Series 8 (41mm)", promo: 20.83, full: 499.99, monthly: 20.83, type: 'watch'},
+                {name: "Apple Watch SE Aluminum (44mm)", promo: 13.74, full: 329.99, monthly: 13.74, type: 'watch'},
+                {name: "Apple Watch SE Aluminum (40mm)", promo: 12.49, full: 299.99, monthly: 12.49, type: 'watch'},
+                {name: "Samsung Galaxy Watch Ultra (47mm)", promo: 27.08, full: 649.99, monthly: 27.08, type: 'watch'},
+                {name: "Samsung Galaxy Watch7 (44mm)", promo: 15.83, full: 379.99, monthly: 15.83, type: 'watch'},
+                {name: "Samsung Galaxy Watch7 (40mm)", promo: 14.58, full: 349.99, monthly: 14.58, type: 'watch'},
+                {name: "Samsung Galaxy Watch 6 Classic (47mm)", promo: 19.99, full: 479.99, monthly: 19.99, type: 'watch'},
+                {name: "Samsung Galaxy Watch 6 Classic (43mm)", promo: 18.74, full: 449.99, monthly: 18.74, type: 'watch'},
+                {name: "Samsung Galaxy Watch 6 (40mm)", promo: 14.58, full: 349.99, monthly: 14.58, type: 'watch'},          
+                {name: "Google Pixel Watch 3 (45mm)", promo: 20.83, full: 499.99, monthly: 20.83, type: 'watch'},
+                {name: "Google Pixel Watch 3 (41mm)", promo: 18.74, full: 449.99, monthly: 18.74, type: 'watch'}
+            ]
+        };
+
+        function getXMCcost(fullPrice) {
+            if (fullPrice <= 300.99) return 9;
+            if (fullPrice <= 949.99) return 15;
+            if (fullPrice <= 1194.99) return 17;
+            return 19;
+        }
+
+        function updateDeviceOptions(select) {
+            const lineDiv = select.closest('.line-details');
+            const deviceSelect = lineDiv.querySelector('.device-select');
+            const type = select.value;
+            
+            deviceSelect.innerHTML = '<option value="">Select a device</option>';
+            
+            if (devices[type]) {
+                devices[type].forEach(device => {
+                    const option = document.createElement('option');
+                    option.value = device.name;
+                    
+                    const showPromo = device.promo >= 0 && device.promo < device.monthly;
+                    const xmcCost = getXMCcost(device.full);
+                    
+                    option.textContent = `${device.name} | Full: $${device.full.toFixed(2)} | Monthly: $${device.monthly.toFixed(2)}` + 
+                                        (showPromo ? ` | Promo: $${device.promo.toFixed(2)}` : "") + 
+                                        ` | XMC: $${xmcCost}`;
+                    option.dataset.device = JSON.stringify(device);
+                    
+                    deviceSelect.appendChild(option);
+                });
+            }
+            
+            const unlimitedPlusDiv = lineDiv.querySelector('.unlimited-plus');
+            if (unlimitedPlusDiv) {
+                unlimitedPlusDiv.style.display = type === 'phone' ? 'block' : 'none';
+            }
+            
+            const existingPriceDisplay = lineDiv.querySelector('.price-display');
+            if (existingPriceDisplay) {
+                existingPriceDisplay.remove();
+            }
+            
+            deviceSelect.onchange = function() {
+                const existingDisplay = lineDiv.querySelector('.price-display');
+                if (existingDisplay) {
+                    existingDisplay.remove();
+                }
+                
+                if (this.value) {
+                    const selectedDevice = devices[type].find(d => d.name === this.value);
+                    if (selectedDevice && selectedDevice.promo >= 0 && selectedDevice.promo < selectedDevice.monthly) {
+                        const priceDisplay = document.createElement('div');
+                        priceDisplay.className = 'price-display';
+                        priceDisplay.innerHTML = `
+                            <div class="pricing-option">
+                                <input type="checkbox" id="use-promo-${lineDiv.id}" checked>
+                                <label for="use-promo-${lineDiv.id}">Use Promo Pricing</label>
+                            </div>
+                        `;
+                        lineDiv.appendChild(priceDisplay);
+                    }
+                }
+            };
+        }
+
+        function createLineItems(numLines) {
+            const linesContainer = document.getElementById('linesContainer');
+            linesContainer.innerHTML = '';
+            
+            for(let i = 1; i <= numLines; i++) {
+                const lineDiv = document.createElement('div');
+                lineDiv.className = 'line-details';
+                lineDiv.id = 'line-' + i;
+                lineDiv.innerHTML = `
+                    <h4><i class="fas fa-mobile-alt"></i> Line ${i}</h4>
+                    
+                    <label>Device Type:</label>
+                    <div class="device-options-row">
+                        <div>
+                            <select class="line-type">
+                                <option value="phone">Mobile Phone</option>
+                                <option value="tablet">Tablet</option>
+                                <option value="watch">Watch</option>
+                            </select>
+                        </div>
+                        <div class="unlimited-plus" style="display: block;">
+                            <label>
+                                <input type="checkbox" checked> <i class="fas fa-bolt"></i> Unlimited Plus (+$10)
+                            </label>
+                        </div>
+                        <div>
+                            <label>
+                                <input type="checkbox" class="xmc" checked> <i class="fas fa-shield-alt"></i> Add XMC
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <label>Device Model:</label>
+                    <select class="device-select">
+                        <option value="">Select a device</option>
+                    </select>
+                `;
+                
+                linesContainer.appendChild(lineDiv);
+                
+                const typeSelect = lineDiv.querySelector('.line-type');
+                typeSelect.onchange = function() {
+                    updateDeviceOptions(this);
+                };
+                
+                updateDeviceOptions(typeSelect);
+            }
+        }
+
+        function toggleBreakdown() {
+            const breakdown = document.querySelector('.breakdown-details');
+            if (breakdown) {
+                breakdown.style.display = breakdown.style.display === 'none' ? 'block' : 'none';
+            }
+        }
+
+        function validateInputs() {
+            let isValid = true;
+            const requiredInputs = [
+                {id: 'currentHome', errorId: 'currentHomeError'},
+                {id: 'currentMobile', errorId: 'currentMobileError'},
+                {id: 'newHome', errorId: 'newHomeError'}
+            ];
+            
+            requiredInputs.forEach(input => {
+                const element = document.getElementById(input.id);
+                const errorElement = document.getElementById(input.errorId);
+                
+                if (!element.value || isNaN(parseFloat(element.value)) || parseFloat(element.value) < 0) {
+                    element.classList.add('input-error');
+                    errorElement.textContent = 'Please enter a valid non-negative number';
+                    isValid = false;
+                } else {
+                    element.classList.remove('input-error');
+                    errorElement.textContent = '';
+                }
+            });
+            
+            const numLines = parseInt(document.getElementById('numLines').value) || 0;
+            if (numLines < 1 || numLines > 10) {
+                document.getElementById('numLines').classList.add('input-error');
+                isValid = false;
+            } else {
+                document.getElementById('numLines').classList.remove('input-error');
+            }
+            
+            return isValid;
+        }
+
+        function calculateSavings() {
+            try {
+                if (!validateInputs()) {
+                    return;
+                }
+                
+                document.getElementById('loader').style.display = 'block';
+                
+                const currentHome = parseFloat(document.getElementById('currentHome').value) || 0;
+                const currentMobile = parseFloat(document.getElementById('currentMobile').value) || 0;
+                const newHome = parseFloat(document.getElementById('newHome').value) || 0;
+                const promotion = document.getElementById('promotion').value;
+                
+                const lineDivs = document.querySelectorAll('.line-details');
+                let lines = [];
+                let mobileServiceCost = 0;
+                let deviceCost = 0;
+                let xmcCost = 0;
+                
+                lineDivs.forEach((lineDiv, index) => {
+                    const type = lineDiv.querySelector('.line-type').value;
+                    const deviceSelect = lineDiv.querySelector('.device-select');
+                    const deviceName = deviceSelect.value;
+                    const device = devices[type].find(d => d.name === deviceName);
+                    
+                    if (!deviceName) {
+                        throw new Error(`Please select a device for Line ${index + 1}`);
+                    }
+                    
+                    const unlimitedPlus = type === 'phone' ? lineDiv.querySelector('.unlimited-plus input').checked : false;
+                    const addXmc = lineDiv.querySelector('.xmc').checked;
+                    const usePromoCheckbox = lineDiv.querySelector('.pricing-option input[type="checkbox"]');
+                    const usePromo = usePromoCheckbox && usePromoCheckbox.checked && device.promo >= 0 && device.promo < device.monthly;
+                    
+                    let lineServiceCost = 0;
+                    let normalServiceCost = 0;
+                    
+                    if (type === 'phone') {
+                        lineServiceCost = index === 0 ? 40 : 20;
+                        normalServiceCost = lineServiceCost;
+                        if (unlimitedPlus) {
+                            lineServiceCost += 10;
+                            normalServiceCost += 10;
+                        }
+                    } else if (type === 'tablet') {
+                        lineServiceCost = 20;
+                        normalServiceCost = 20;
+                    } else if (type === 'watch') {
+                        lineServiceCost = 10;
+                        normalServiceCost = 10;
+                    }
+                    
+                    if (promotion === 'free' && index === 0) {
+                        lineServiceCost = 0;
+                    } else if (promotion === 'bogo' && index % 2 === 1) {
+                        lineServiceCost = 0;
+                    }
+                    
+                    let deviceMonthly = usePromo ? device.promo : device.monthly;
+                    const lineXmcCost = addXmc ? getXMCcost(device.full) : 0;
+                    
+                    lines.push({
+                        type: type + (unlimitedPlus ? ' (Unlimited Plus)' : ' (Unlimited)'),
+                        device: device.name,
+                        deviceMonthly: deviceMonthly,
+                        deviceFull: device.full,
+                        serviceCost: lineServiceCost,
+                        normalServiceCost: normalServiceCost,
+                        xmcCost: lineXmcCost,
+                        usePromo: usePromo,
+                        unlimitedPlus: unlimitedPlus
+                    });
+                    
+                    mobileServiceCost += lineServiceCost;
+                    deviceCost += deviceMonthly;
+                    xmcCost += lineXmcCost;
+                });
+                
+                const currentTotal = currentHome + currentMobile;
+                const xfinityMobileTotal = mobileServiceCost + deviceCost + xmcCost;
+                const newTotalFirst12 = newHome + xfinityMobileTotal;
+                
+                let newTotalNext12 = newHome + xfinityMobileTotal;
+                if (promotion === 'free' && lineDivs.length > 0) {
+                    const firstLine = lines[0];
+                    const lineCost = firstLine.type.includes('phone') ? 
+                                  (firstLine.unlimitedPlus ? 50 : 40) :
+                                  (firstLine.type.includes('tablet') ? 20 : 10);
+                    newTotalNext12 += lineCost;
+                } else if (promotion === 'bogo' && lineDivs.length > 1) {
+                    const bogolines = Math.floor(lineDivs.length / 2);
+                    for (let i = 1; i <= bogolines; i++) {
+                        const lineIndex = i*2 - 1;
+                        if (lineIndex < lines.length) {
+                            const lineType = lines[lineIndex].type.includes('phone') ? 
+                                          (lines[lineIndex].unlimitedPlus ? 30 : 20) :
+                                          (lines[lineIndex].type.includes('tablet') ? 20 : 10);
+                            newTotalNext12 += lineType;
+                        }
+                    }
+                }
+                
+                const monthlySavingsFirst12 = currentTotal - newTotalFirst12;
+                const monthlySavingsNext12 = currentTotal - newTotalNext12;
+                const yearlySavingsFirst12 = monthlySavingsFirst12 * 12;
+                const yearlySavingsNext12 = monthlySavingsNext12 * 12;
+                const totalSavings24Months = yearlySavingsFirst12 + yearlySavingsNext12;
+                const averageMonthlySavings = totalSavings24Months / 24;
+                
+                const breakdownHTML = `
+                    <div class="breakdown-details">
+                        <p><strong>Mobile Service:</strong> $${mobileServiceCost.toFixed(2)}</p>
+                        <p><strong>Devices:</strong> $${deviceCost.toFixed(2)}</p>
+                        <p><strong>XMC:</strong> $${xmcCost.toFixed(2)}</p>
+                        ${lines.map(line => `
+                            <p style="margin-top:5px;"><small>${line.device.split(' ')[0]}: 
+                                Service: $${line.serviceCost.toFixed(2)} | 
+                                Device: $${line.deviceMonthly.toFixed(2)} | 
+                                XMC: $${line.xmcCost.toFixed(2)}
+                            </small></p>
+                        `).join('')}
+                    </div>
+                `;
+                
+                let summaryHTML = `
+                    <div class="summary-item">
+                        <h3><i class="fas fa-exchange-alt"></i> Current vs. Xfinity Costs</h3>
+			<p style="margin-top:15px; font-size:0.9em;"><em>*Promotional pricing applies only to service costs and expires after 12 months. Device costs are not included in promotions. Taxes and fees not included.</em></p>
+                        <div class="chart">
+                            <div style="flex:${currentTotal}; background:#ff4444;">
+                                Current Provider ($${currentTotal.toFixed(2)}) / Month
+                            </div>
+                            <div style="flex:${newTotalFirst12}; background:var(--highlight-green);">
+                                All with Xfinity ($${newTotalFirst12.toFixed(2)}) / Month
+                            </div>
+                        </div>
+                        <table style="width:100%; border-collapse:collapse; margin-top:15px;">
+                            <tr>
+                                <th style="text-align:left;"></th>
+                                <th style="text-align:right;">Current</th>
+                                <th style="text-align:right;">Xfinity (First 12mo)</th>
+                                <th style="text-align:right;">Xfinity (Months 13-24)</th>
+                            </tr>
+                            <tr>
+                                <td style="text-align:left;"><strong>Home</strong></td>
+                                <td style="text-align:right;">$${currentHome.toFixed(2)}</td>
+                                <td style="text-align:right;">$${newHome.toFixed(2)}</td>
+                                <td style="text-align:right;">$${newHome.toFixed(2)}</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:left;"><strong>Mobile</strong></td>
+                                <td style="text-align:right;">$${currentMobile.toFixed(2)}</td>
+                                <td style="text-align:right;">$${xfinityMobileTotal.toFixed(2)}</td>
+                                <td style="text-align:right;">$${newTotalNext12.toFixed(2)}</td>
+                            </tr>
+                            <tr style="border-top:1px solid rgba(255,255,255,0.3); font-weight:bold;">
+                                <td style="text-align:left;">Total</td>
+                                <td style="text-align:right;">$${currentTotal.toFixed(2)}</td>
+                                <td style="text-align:right;">$${newTotalFirst12.toFixed(2)}</td>
+                                <td style="text-align:right;">$${newTotalNext12.toFixed(2)}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    
+                    <div class="savings-highlight">
+                        <p><i class="fas fa-piggy-bank"></i> <strong>  Average Monthly Savings:</strong> $${averageMonthlySavings.toFixed(2)}</p>
+                        <p><i class="fas fa-piggy-bank"></i><strong>  Total Savings (24 Months):</strong> $${totalSavings24Months.toFixed(2)}</p>
+                        <p><i class="fas fa-piggy-bank"></i><strong>  Yearly Savings:</strong> First Year: $${yearlySavingsFirst12.toFixed(2)} | Second Year: $${yearlySavingsNext12.toFixed(2)}</p>
+                    </div>
+                    
+                    <div class="summary-item">
+                        <h3><i class="fas fa-mobile-alt"></i> Line Details</h3>
+                `;
+                
+                lines.forEach((line, index) => {
+                    const device = devices[line.type.split(' ')[0]].find(d => d.name === line.device);
+                    const promoText = promotion === 'free' && index === 0 ? 
+                                    ' (Service FREE for 12 months)' : 
+                                    (promotion === 'bogo' && index % 2 === 1 ? ' (Service FREE for 12 months)' : 
+                                    (line.usePromo ? ' with promo' : ''));
+                    
+                    summaryHTML += `
+                        <div class="line-item">
+                            <p><strong>Line ${index + 1}:</strong> ${line.type.replace(' (Unlimited Plus)', '')}</p>
+                            <p>Device: ${line.device} ($${line.deviceMonthly.toFixed(2)}/mo${line.usePromo ? ' with promo' : ''})</p>
+                            <p>Service: ${promotion === 'free' && index === 0 ? 
+                                        `$${0.00}/mo for 12 months, then $${line.normalServiceCost.toFixed(2)}/mo` : 
+                                        promotion === 'bogo' && index % 2 === 1 ? 
+                                        `$${0.00}/mo for 12 months, then $${line.normalServiceCost.toFixed(2)}/mo` : 
+                                        `$${line.serviceCost.toFixed(2)}/mo`}</p>
+                            <p>XMC: $${line.xmcCost.toFixed(2)}/mo</p>
+                        </div>
+                    `;
+                });
+                
+                summaryHTML += `
+                    </div>
+                    
+                    <div class="summary-item">
+                        <h3><i class="fas fa-info-circle"></i> Summary</h3>
+                        ${breakdownHTML}
+                        <div class="pricing-option" style="margin-top:15px;">
+                            <input type="checkbox" id="showBreakdown" onchange="toggleBreakdown()">
+                            <label for="showBreakdown">Show detailed cost breakdown</label>
+                        </div>
+                        <p style="margin-top:15px; font-size:0.9em;"><em>*Promotional pricing applies only to service costs and expires after 12 months. Device costs are not included in promotions. Taxes and fees not included.</em></p>
+                    </div>
+                `;
+                
+                document.getElementById('summaryContent').innerHTML = summaryHTML;
+                
+                const breakdown = document.querySelector('.breakdown-details');
+                if (breakdown) {
+                    breakdown.style.display = 'none';
+                }
+                
+                document.getElementById('loader').style.display = 'none';
+                
+            } catch (error) {
+                console.error("Calculation error:", error);
+                document.getElementById('loader').style.display = 'none';
+                document.getElementById('summaryContent').innerHTML = `
+                    <div class="summary-item" style="color: var(--error-red);">
+                        <p><i class="fas fa-exclamation-triangle"></i> Error calculating savings. Please check your inputs and try again.</p>
+                        <p>Error details: ${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        function resetForm() {
+            document.getElementById('linesContainer').innerHTML = '';
+            document.getElementById('currentHome').value = '';
+            document.getElementById('currentMobile').value = '';
+            document.getElementById('newHome').value = '';
+            document.getElementById('numLines').value = 1;
+            document.getElementById('promotion').value = 'none';
+            document.getElementById('summaryContent').innerHTML = 
+                '<p>Enter your information and click "Calculate" to see your potential savings.</p>';
+                
+            document.querySelectorAll('.input-error').forEach(el => el.classList.remove('input-error'));
+            document.querySelectorAll('.error-message').forEach(el => el.textContent = '');
+            
+            createLineItems(1);
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            createLineItems(1);
+            
+            document.getElementById('numLines').addEventListener('input', function() {
+                const numLines = parseInt(this.value) || 1;
+                createLineItems(numLines);
+            });
+
+            document.querySelectorAll('#currentHome, #currentMobile, #newHome').forEach(input => {
+                input.addEventListener('input', function() {
+                    if (this.value && !isNaN(parseFloat(this.value)) && parseFloat(this.value) >= 0) {
+                        this.classList.remove('input-error');
+                        document.getElementById(this.id + 'Error').textContent = '';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
